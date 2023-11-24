@@ -79,14 +79,20 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('touchstart', function(event) {
+    console.log("touche");
     var touch = event.changedTouches[0];
     startX = touch.pageX;
     startY = touch.pageY;
+    if (gameOver === true){
+        console.log("touche");
+        initialisation();
+        boucle();
+    }
 });
 
 document.addEventListener('touchmove', function(event) {
-    event.preventDefault();
-});
+    event. preventDefault();
+}, { passive: false });
 
 document.addEventListener('touchend', function(event) {
     var touch = event.changedTouches[0];
@@ -465,7 +471,7 @@ function boucle(){
         }
     }
     if (gameOver === false){
-        setTimeout(boucle, 20);
+        setTimeout(boucle, 10);
     }
 }
 
