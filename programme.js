@@ -420,7 +420,9 @@ function toutSupprimer(){
     while (listeSerpent.length > 0){
         const queue = listeSerpent.shift();
         queue.articulation.remove();
-        queue.os.remove();
+        if (queue.os !== null){
+            queue.os.remove();
+        }
     }
     while (listePomme.length > 0){
         const pomme = listePomme.shift();
