@@ -100,7 +100,7 @@ document.addEventListener('touchend', function(event) {
     distY = touch.pageY - startY;
 
     if (pause === false){
-        if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+        if (Math.abs(distX) >= threshold && (Math.abs(distX) >= Math.abs(distY)) {
             if (distX > 0 && derniereDirection !== "GAUCHE") {
                 listeDirection.push("DROITE");
                 derniereDirection = "DROITE";
@@ -110,7 +110,7 @@ document.addEventListener('touchend', function(event) {
                 derniereDirection = "GAUCHE";
             }
         }
-        else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
+        else if (Math.abs(distY) >= threshold && Math.abs(distY) >= Math.abs(distX)) {
             if (distY > 0 && derniereDirection !== "HAUT") {
                 listeDirection.push("BAS");
                 derniereDirection = "BAS";
@@ -440,10 +440,10 @@ function initialisation(){
     directionQueue = "DROITE";
 
     listeSerpent = [
-        createBody({'x':2, 'y':2}, "DROITE"),
-        createBody({'x':3, 'y':2}, "DROITE"),
-        createBody({'x':4, 'y':2}, "DROITE"),
-        createBody({'x':5, 'y':2}, "DROITE"),
+        createBody({'x':-3, 'y':2}, "DROITE"),
+        createBody({'x':-2, 'y':2}, "DROITE"),
+        createBody({'x':-1, 'y':2}, "DROITE"),
+        createBody({'x':0, 'y':2}, "DROITE"),
     ];
 
     listePomme = [
