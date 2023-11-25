@@ -48,29 +48,8 @@ document.addEventListener('keydown', function(event) {
     }
     var codeTouche = event.keyCode || event.which;
     if (pause === false){
-        if (TOUCHE[codeTouche] === "GAUCHE"){
-            if (derniereDirection !== "DROITE"){
-                listeDirection.push("GAUCHE");
-                derniereDirection = "GAUCHE";
-            }
-        }
-        if (TOUCHE[codeTouche] === "DROITE"){
-            if (derniereDirection !== "GAUCHE"){
-                listeDirection.push("DROITE");
-                derniereDirection = "DROITE";
-            }
-        }
-        if (TOUCHE[codeTouche] === "HAUT"){
-            if (derniereDirection !== "BAS"){
-                listeDirection.push("HAUT");
-                derniereDirection = "HAUT";
-            }
-        }
-        if (TOUCHE[codeTouche] === "BAS"){
-            if (derniereDirection !== "HAUT"){
-                listeDirection.push("BAS");
-                derniereDirection = "BAS";
-            }
+        if (TOUCHE[codeTouche] === "GAUCHE" || TOUCHE[codeTouche] === "DROITE" || TOUCHE[codeTouche] === "HAUT" || TOUCHE[codeTouche] === "BAS"){
+            goToDirection(TOUCHE[codeTouche]);
         }
     }
     if (TOUCHE[codeTouche] === "ESPACE"){
@@ -79,12 +58,10 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('touchstart', function(event) {
-    console.log("touche");
     var touch = event.changedTouches[0];
     startX = touch.pageX;
     startY = touch.pageY;
     if (gameOver === true){
-        console.log("touche");
         initialisation();
         boucle();
     }
@@ -92,36 +69,38 @@ document.addEventListener('touchstart', function(event) {
 
 document.addEventListener('touchmove', function(event) {
     event. preventDefault();
-}, { passive: false });
-
-document.addEventListener('touchend', function(event) {
     var touch = event.changedTouches[0];
     distX = touch.pageX - startX;
     distY = touch.pageY - startY;
-
-    if (pause === false){
-        if (Math.abs(distX) >= threshold && (Math.abs(distX) >= Math.abs(distY)) {
-            if (distX > 0 && derniereDirection !== "GAUCHE") {
-                listeDirection.push("DROITE");
-                derniereDirection = "DROITE";
-            }
-            else if (distX < 0 && derniereDirection !== "DROITE"){
-                listeDirection.push("GAUCHE");
-                derniereDirection = "GAUCHE";
-            }
-        }
-        else if (Math.abs(distY) >= threshold && Math.abs(distY) >= Math.abs(distX)) {
-            if (distY > 0 && derniereDirection !== "HAUT") {
-                listeDirection.push("BAS");
-                derniereDirection = "BAS";
-            }
-            else if (distY < 0 && derniereDirection !== "BAS"){
-                listeDirection.push("HAUT");
-                derniereDirection = "HAUT";
-            }
-        }
+    if (distX > threshold){
+        goToDirection("DROITE");
+        setStart(touch.pageX, touch.pageY);
     }
-});
+    if (-distX > threshold){
+        goToDirection("GAUCHE");
+        setStart(touch.pageX, touch.pageY);
+    }
+    if (distY > threshold){
+        goToDirection("BAS");
+        setStart(touch.pageX, touch.pageY);
+    }
+    if (-distY > threshold){
+        goToDirection("HAUT");
+        setStart(touch.pageX, touch.pageY);
+    }
+}, { passive: false });
+
+function setStart(abs, ord){
+    startX = abs;
+    startY = ord;
+}
+
+function goToDirection(direction){
+    if (derniereDirection !== direction && derniereDirection !== getDirectionOposee(direction)){
+        listeDirection.push(direction);
+        derniereDirection = direction;
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                             Objets                                                           //
@@ -412,6 +391,21 @@ function getDirection(point){
     }
 }
 
+function getDirectionOposee(direction){
+    if (direction === "BAS"){
+        return "HAUT";
+    }
+    if (direction === "HAUT"){
+        return "BAS";
+    }
+    if (direction === "DROITE"){
+        return "GAUCHE";
+    }
+    if (direction === "GAUCHE"){
+        return "DROITE";
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                         Intitialisation                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -447,7 +441,7 @@ function initialisation(){
     ];
 
     listePomme = [
-        createApple({'x':5, 'y':5})
+        createApple(caseRandom())
     ];
 
     gameOver = false;
