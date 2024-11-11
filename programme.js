@@ -57,6 +57,13 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+document.addEventListener('click', function(event) {
+    if (gameOver === true){
+        initialisation();
+        boucle();
+    }
+});
+
 document.addEventListener('touchstart', function(event) {
     var touch = event.changedTouches[0];
     startX = touch.pageX;
